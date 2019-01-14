@@ -68,5 +68,6 @@ class Maze:
         self.structure[x][y] = symbol
 
     def get_symbol(self, x, y):
-        """ using the value and not the position to allow value testings """            return self.structure[x][y]
+        """ using the value and not the position to allow value testings """
+        return self.structure[x][y]
 
