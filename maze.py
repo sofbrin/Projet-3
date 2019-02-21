@@ -63,11 +63,11 @@ class Maze:
             x += 1
         return empty_spaces
 
-    def write_symbol(self, x, y, symbol):
+    def write_symbol(self, position, symbol):
         """ writing the new position after moving """
-        self.structure[x][y] = symbol
+        self.structure[position[0]][position[1]] = symbol
 
-    def get_symbol(self, x, y):
-        """ using the value and not the position to allow value testings """
-        return self.structure[x][y]
+    def get_symbol(self, position):
+        """ using the value and not the position to alow value testings """
+        return self.structure[position[0]][position[1]]
 
