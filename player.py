@@ -1,6 +1,3 @@
-from constants import*
-
-
 class Player:
 
     def __init__(self, x, y):
@@ -15,24 +12,43 @@ class Player:
         """ adding picked up tools to list """
         self.PickedUpTools.append(symbol)
 
+    """ moving the player """
+    def moving_up(self):
+        self.x -= 1
+        return self.x, self.y
+
+    def moving_down(self):
+        self.x += 1
+        return self.x, self.y
+
+    def moving_right(self):
+        self.y += 1
+        return self.x, self.y
+
+    def moving_left(self):
+        self.y -= 1
+        return self.x, self.y
+
     def moving_to(self):
-        """ moving the player """
-        choice2 = input('Choisissez un chiffre pour vous déplacer : ')
+        while True:
+            choice2 = input('Choisissez un chiffre pour vous déplacer : ')
+            if choice2 == "Q" or choice2 == "6" or choice2 == "4" or choice2 == "8" or choice2 == "2":
+                break
 
         if choice2 == "Q":
-            print(end_of_game)
+            return None
 
         elif choice2 == "6":
-            self.y += 1
+            self.moving_right()
 
         elif choice2 == "4":
-            self.y -= 1
+            self.moving_left()
 
         elif choice2 == "8":
-            self.x -= 1
+            self.moving_up()
 
         elif choice2 == "2":
-            self.x += 1
+            self.moving_down()
 
         return self.x, self.y
 
