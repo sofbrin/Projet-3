@@ -1,6 +1,7 @@
 import random
+import sys
 
-from maze import*
+
 from player import Player
 from guard import Guard
 from constants import*
@@ -33,9 +34,6 @@ class GameManager:
         for tool in self.tools: # positionning
             self.labyrinth.write_symbol(tool.x, tool.y, tool.symbol)
 
-        # init picked up tools list
-        self.MacGyver.PickedUpTools = []
-
     def play_or_quit(self):
         """ game loop """
 
@@ -47,39 +45,33 @@ class GameManager:
             
             # moving vars definition
             new_pos = self.MacGyver.moving_to()
+            if new_pos is None:
+                print(end_of_game)
+                sys.exit()
+
             prev_pos = self.labyrinth.get_player_position()
-            val_new_pos = self.labyrinth.get_symbol(new_pos[0], new_pos[1])
+            val_new_pos = self.labyrinth.get_symbol(new_pos)
 
             # moving testing
             if val_new_pos == ' ':
-                self.labyrinth.write_symbol(new_pos[0], new_pos[1], "P")
-                self.labyrinth.write_symbol(prev_pos[0], prev_pos[1], " ")
+                self.labyrinth.write_symbol(new_pos, "P")
+                self.labyrinth.write_symbol(prev_pos, " ")
 
             if val_new_pos == 'x':
                 self.MacGyver.set_position(prev_pos)
                 print("Déplacement impossible")
 
-            elif val_new_pos == 'E':
-                self.MacGyver.add_tools(['E'])
-                self.labyrinth.write_symbol(new_pos[0], new_pos[1], "P")
-                self.labyrinth.write_symbol(prev_pos[0], prev_pos[1], " ")
-
-            elif val_new_pos == 'N':
-                self.MacGyver.add_tools(['N'])
-                self.labyrinth.write_symbol(new_pos[0], new_pos[1], "P")
-                self.labyrinth.write_symbol(prev_pos[0], prev_pos[1], " ")
-
-            elif val_new_pos == 'T':
-                self.MacGyver.add_tools(['T'])
-                self.labyrinth.write_symbol(new_pos[0], new_pos[1], "P")
-                self.labyrinth.write_symbol(prev_pos[0], prev_pos[1], " ")
+            elif val_new_pos == 'E' or val_new_pos == 'N' or val_new_pos == 'T':
+                self.MacGyver.add_tool(val_new_pos)
+                self.labyrinth.write_symbol(new_pos, "P")
+                self.labyrinth.write_symbol(prev_pos, " ")
 
             elif val_new_pos == 'G':
                 if len(self.MacGyver.PickedUpTools) < 3:
-                    print('Arghhhh, vous n\'avez pas tous les accessoires pour endormir le gardien. C\'est perdu !!!')
+                    print('Arghhhh, perdu, il manque {} objets !!!'.format(3 - len(self.MacGyver.PicketUpTools)))
                 else:
-                    self.labyrinth.write_symbol(new_pos[0], new_pos[1], "P")
-                    self.labyrinth.write_symbol(prev_pos[0], prev_pos[1], " ")
+                    self.labyrinth.write_symbol(new_pos, "P")
+                    self.labyrinth.write_symbol(prev_pos, " ")
                     print('Bravo, MacGyver a réussi à sortir du labyrinthe !')
                 break
 
