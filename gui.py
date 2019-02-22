@@ -61,7 +61,7 @@ class Gui :
         self.screen = pygame.display.set_mode((800, 600))
         self.background_image = pygame.image.load(r"img\background.png")
         self.ether_image = pygame.image.load(r"img\ether.png")
-        self.guard_image = pygame.image.load(r"imag\guard.png")
+        self.guard_image = pygame.image.load(r"img\guard.png")
         self.macgyver_image = pygame.image.load(r"img\macgyver.png")
         self.needle_image = pygame.image.load(r"img\needle.png")
         self.tube_image = pygame.image.load(r"img\tube.png")
