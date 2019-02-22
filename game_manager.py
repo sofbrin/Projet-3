@@ -11,7 +11,7 @@ from tools import Tool
 class GameManager:
 
     def __init__(self, labyrinth):
-    """ init Game Manager """
+        """ init Game Manager """
         self.labyrinth = labyrinth
 
         # player and guard positioning
