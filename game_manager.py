@@ -5,7 +5,7 @@ import sys
 from player import Player
 from guard import Guard
 from constants import*
-from tools import Tool
+from tool import Tool
 
 
 class GameManager:

@@ -14,7 +14,7 @@ class WallSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-class CharacterSPrite(pygame.sprite.Sprite):
+class CharacterSprite(pygame.sprite.Sprite):
     def __init__(self, image):
         super().__init__()
         self.image = image
@@ -74,7 +74,7 @@ class Gui :
         self.tubeC_image = pygame.image.load(r"img\tubeC.png")
 
         self.character_sprites_list = pygame.sprite.Group()
-        self.tools_sprites_ist = pygame.sprite.Group()
+        self.tools_sprites_list = pygame.sprite.Group()
         self.wall_sprites_list = pygame.sprite.Group()
 
         self.macgyver_sprite = CharacterSprite(self.macgyver_image)
@@ -171,7 +171,7 @@ class Gui :
         text4 = basicfont.render("L'éther :", True, (255, 255, 255))
         text5 = basicfont.render("L'aiguille :", True, (255, 255, 255))
         text6 = basicfont.render("Le tube :", True, (255, 255, 255))
-        text7 = basicfont.rendez("Utilisez les flèches pour vous déplacer dans le labyrinthe.", True, (255, 255, 255))
+        text7 = basicfont.render("Utilisez les flèches pour vous déplacer dans le labyrinthe.", True, (255, 255, 255))
         text8 = basicfont, render('Tapez "Echap" pour quitter, "Entrée" pour jouer', True, (255, 0, 0))
 
         text1_rect = text1.get_rect()
@@ -281,10 +281,12 @@ class Gui :
 
     def draw_tools(self):
         for idx, temp_tool in enumerate(self.tools):
-            self.tools_list[idx].rect.x = temp_tool.y[1] * 40
-            self.tools_list[idx].rect.y = temp_tool.x[0] * 40
+            self.tools_list[idx].rect.x = temp_tool.y * 40
+            self.tools_list[idx].rect.y = temp_tool.x * 40
+        self.tools_sprites_list.update()
+        self.tools_sprites_list.draw(self.screen)
 
-    def lost_text():
+    def lost_text(self):
         basicfont = pygame.font.SysFont(None, 20)
         text = basicfont.render("Perdu, il manque {} objet(s) !!!".format(3 - len(self.MacGyver.PickedUpTools)), True, (255, 255, 255))
         text_rect = text.get_rect()
@@ -294,7 +296,7 @@ class Gui :
 
     def win_text(self):
         basicfont = pygame.font.SysFont(None, 30)
-        text = basicont.render("Gagné !", True, (255, 255, 255))
+        text = basicfont.render("Gagné !", True, (255, 255, 255))
         text_rect = text.get_rect()
         text_rect.x = 610
         text_rect.y = 350
