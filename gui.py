@@ -1,5 +1,6 @@
 import pygame
 import random
+import sys
 
 
 from pygame.locals import *
@@ -54,8 +55,6 @@ class Gui :
         for tool in self.tools:
             self.labyrinth.write_symbol((tool.x, tool.y), tool.symbol)
 
-        self.start_tools_y = 200
-
         pygame.init()
 
         self.screen = pygame.display.set_mode((800, 600))
@@ -72,6 +71,7 @@ class Gui :
         self.etherC_image = pygame.image.load(r"img\etherC.png")
         self.needleC_image = pygame.image.load(r"img\needleC.png")
         self.tubeC_image = pygame.image.load(r"img\tubeC.png")
+        self.clock = pygame.time.Clock()
 
         self.character_sprites_list = pygame.sprite.Group()
         self.tools_sprites_list = pygame.sprite.Group()
@@ -83,6 +83,8 @@ class Gui :
 
         self.character_sprites_list.add([self.macgyver_sprite, self.guard_sprite])
         self.tools_sprites_list.add(self.tools_list)
+
+        self.start_tools_y = 200
 
         pygame.display.set_caption("Le labyrinthe de MacGyver")
 
@@ -119,40 +121,51 @@ class Gui :
                 elif event.type == pygame.KEYDOWN and event.key == K_UP:
                     new_pos = self.MacGyver.moving_up()
 
-            if new_pos is None:
-                continue
+            if new_pos is not None:
+                prev_pos = self.labyrinth.get_player_position()
+                val_new_pos = self.labyrinth.get_symbol(new_pos)
 
-            prev_pos = self.labyrinth.get_player_position()
-            val_new_pos = self.labyrinth.get_symbol(new_pos)
-
-            if val_new_pos == ' ':
-                self.labyrinth.write_symbol(new_pos, "P")
-                self.labyrinth.write_symbol(prev_pos, " ")
+                if val_new_pos == ' ':
+                    self.macgyver_sprite.move(new_pos[0], new_pos[1])
+                    self.labyrinth.write_symbol(new_pos, "P")
+                    self.labyrinth.write_symbol(prev_pos, " ")
 
             elif val_new_pos == 'x':
-                self.MacGyver.set_position(prev_pos)
+                self.macgyver_sprite.move(prev_pos[0], prev_pos[1]))
 
             elif val_new_pos == 'E' or val_new_pos == 'N' or val_new_pos == 'T':
                 self.MacGyver.add_tool(val_new_pos)
+                self.macgyver_sprite.move(new_pos[0], new_pos[1])
                 self.labyrinth.write_symbol(new_pos, "P")
                 self.labyriht.write_symbol(prev_pos, " ")
-                self.add_tool_text(val_new_pos)
+                for idx, symbol in enumerate(sefl.symbols):
+                    if val_new_pos == symbol:
+                        del self.tools[idx]
+                        self.tools_list[idx].kill()
+                        break
 
-            elif val_new_pos == 'G':
-                if len(self.MacGyver.PickedUpTools) < 3:
+                elif val_new_pos == 'G':
+                    self.macgyver_sprite.move(new_pos[0], new_pos[1])
+                    if len(self.MacGyver.PickedUpTools) < 3:
                     self.screen.blit(self.lost_image, [0, 0])
                     self.lost_text()
                     pygame.display.flip()
-                    break
+                    pygame.time.wait(5000)
+                    sys.exit()
                 else:
                     self.labyrinth.write_symbol(new_pos, "P")
                     self.labyrinth.write_symbol(prev_pos, " ")
                     self.screen.blit(self.win_image, [0, 0])
                     self.win_text()
                     pygame.display.flip()
+                    pygame.time.wait(5000)
                 break
 
-            self.display_images()
+        self.character_sprites_list.update()
+        self.tools_sprites_list.update()
+        pygame.display.flip()
+        self.display_images()
+        self.clock.tick(60)
 
     def display_images(self):
         self.screen.fill((0, 0, 0))
@@ -259,6 +272,12 @@ class Gui :
         self.screen.blit(text5, text5_rect)
         self.screen.blit(text6, text6_rect)
 
+        self.start_tools_y = 200
+        for tool in self.MacGyver.PickedUpTools:
+            for idx, symbol in enumerate(self.symbols):
+                if tool == symbol:
+                    self.add_tool_text(self.names[idx])
+
         pygame.display.flip()
 
     def draw_walls(self):
@@ -302,3 +321,11 @@ class Gui :
         text_rect.y = 350
         self.screen.blit(text, text_rect)
 
+    def add_tool_text(self, name):
+        basicfont = pygame.font.SysFont(None, 25)
+        text = basicfont.render(name, True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.x = 630
+        text_rect.y = self.start_tools_y
+        self.screen.blit(text, text_rect)
+        self.start_tools_y += 50
