@@ -44,7 +44,7 @@ class Gui :
         empty_spaces = self.labyrinth.get_empty_spaces()
         self.tools = []
         self.symbols = ['E', 'N', 'T']
-        self.names = ['Ether', 'Needle', 'Tube']
+        self.names = ['Ether', 'Aiguille', 'Tube']
 
         for idx, symbol in enumerate(self.symbols):
             tmp_pos = random.choice(empty_spaces)
@@ -130,42 +130,38 @@ class Gui :
                     self.labyrinth.write_symbol(new_pos, "P")
                     self.labyrinth.write_symbol(prev_pos, " ")
 
-            elif val_new_pos == 'x':
-                self.macgyver_sprite.move(prev_pos[0], prev_pos[1]))
+                elif val_new_pos == 'x':
+                    self.macgyver_sprite.move(prev_pos[0], prev_pos[1])
 
-            elif val_new_pos == 'E' or val_new_pos == 'N' or val_new_pos == 'T':
-                self.MacGyver.add_tool(val_new_pos)
-                self.macgyver_sprite.move(new_pos[0], new_pos[1])
-                self.labyrinth.write_symbol(new_pos, "P")
-                self.labyriht.write_symbol(prev_pos, " ")
-                for idx, symbol in enumerate(sefl.symbols):
-                    if val_new_pos == symbol:
-                        del self.tools[idx]
-                        self.tools_list[idx].kill()
-                        break
+                elif val_new_pos == 'E' or val_new_pos == 'N' or val_new_pos == 'T':
+                    self.MacGyver.add_tool(val_new_pos)
+                    self.macgyver_sprite.move(new_pos[0], new_pos[1])
+                    self.labyrinth.write_symbol(new_pos, "P")
+                    self.labyriht.write_symbol(prev_pos, " ")
+                    for idx, symbol in enumerate(sefl.symbols):
+                        if val_new_pos == symbol:
+                            self.tools_list[idx].kill()
+                            break
 
                 elif val_new_pos == 'G':
                     self.macgyver_sprite.move(new_pos[0], new_pos[1])
                     if len(self.MacGyver.PickedUpTools) < 3:
-                    self.screen.blit(self.lost_image, [0, 0])
-                    self.lost_text()
-                    pygame.display.flip()
-                    pygame.time.wait(5000)
-                    sys.exit()
-                else:
-                    self.labyrinth.write_symbol(new_pos, "P")
-                    self.labyrinth.write_symbol(prev_pos, " ")
-                    self.screen.blit(self.win_image, [0, 0])
-                    self.win_text()
-                    pygame.display.flip()
-                    pygame.time.wait(5000)
-                break
+                        self.screen.blit(self.lost_image, [0, 0])
+                        self.lost_text()
+                        pygame.display.flip()
+                        pygame.time.wait(5000)
+                        sys.exit()
+                    else:
+                        self.labyrinth.write_symbol(new_pos, "P")
+                        self.labyrinth.write_symbol(prev_pos, " ")
+                        self.screen.blit(self.win_image, [0, 0])
+                        self.win_text()
+                        pygame.display.flip()
+                        pygame.time.wait(5000)
+                    break
 
-        self.character_sprites_list.update()
-        self.tools_sprites_list.update()
-        pygame.display.flip()
-        self.display_images()
-        self.clock.tick(60)
+            self.display_images()
+            self.clock.tick(60)
 
     def display_images(self):
         self.screen.fill((0, 0, 0))
@@ -185,7 +181,7 @@ class Gui :
         text5 = basicfont.render("L'aiguille :", True, (255, 255, 255))
         text6 = basicfont.render("Le tube :", True, (255, 255, 255))
         text7 = basicfont.render("Utilisez les flèches pour vous déplacer dans le labyrinthe.", True, (255, 255, 255))
-        text8 = basicfont, render('Tapez "Echap" pour quitter, "Entrée" pour jouer', True, (255, 0, 0))
+        text8 = basicfont, render('Tapez "Echap" pour quitter, n\'importe quelle autre touche pour jouer', True, (255, 0, 0))
 
         text1_rect = text1.get_rect()
         text1_rect.x = 50
@@ -277,8 +273,6 @@ class Gui :
             for idx, symbol in enumerate(self.symbols):
                 if tool == symbol:
                     self.add_tool_text(self.names[idx])
-
-        pygame.display.flip()
 
     def draw_walls(self):
         for x, line in enumerate(self.labyrinth.structure):
