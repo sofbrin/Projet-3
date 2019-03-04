@@ -1,18 +1,17 @@
 class Player:
 
+    """ init player's position """
     def __init__(self, x, y):
-        """ init player's position """
         self.x = x
         self.y = y
 
         """ init picked up tools list """
         self.PickedUpTools = []
 
-    def add_tools(self, symbol):
-        """ adding picked up tools to list """
+    """ adding picked up tools to list """
+    def add_tool(self, symbol):
         self.PickedUpTools.append(symbol)
 
-    """ moving the player """
     def moving_up(self):
         self.x -= 1
         return self.x, self.y
@@ -29,6 +28,7 @@ class Player:
         self.y -= 1
         return self.x, self.y
 
+    """ moving the player """
     def moving_to(self):
         while True:
             choice2 = input('Choisissez un chiffre pour vous déplacer : ')
@@ -52,13 +52,11 @@ class Player:
 
         return self.x, self.y
 
-
+    """ checking if the player's positioning works fine """
     def __str__(self):
-        """ checking if the player's positioning works fine """
         return str(self.x) + " " + str(self.y)
 
+    """ sending back to the previous position if the new one doesnt allow the move """
     def set_position(self, position):
-        """ sending back to the previous position if the new one doesnt allow the move """
         self.x = position[0]
         self.y = position[1]
-

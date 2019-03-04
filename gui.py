@@ -2,10 +2,9 @@ import pygame
 import random
 import sys
 
-
 from pygame.locals import *
-from player import Player
-from tool import Tool
+from Player import Player
+from Tool import Tool
 
 
 class WallSprite(pygame.sprite.Sprite):
@@ -33,28 +32,33 @@ class ToolSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-class Gui :
+class Gui:
 
     def __init__(self, labyrinth):
         self.labyrinth = labyrinth
 
+        """ player positioning """
         positionP = self.labyrinth.get_player_position()
         self.MacGyver = Player(positionP[0], positionP[1])
 
+        """ tools random positioning from an empty spaces list """
         empty_spaces = self.labyrinth.get_empty_spaces()
         self.tools = []
         self.symbols = ['E', 'N', 'T']
         self.names = ['Ether', 'Aiguille', 'Tube']
+        #self.images = [self.etherC_image, self.needleC_image, self.tubeC_image]
 
         for idx, symbol in enumerate(self.symbols):
+        #for idx, val, symbol in enumerate(self.symbols):
             tmp_pos = random.choice(empty_spaces)
-            temp_tool = Tool(tmp_pos[0], tmp_pos[1], symbol, self.names[idx])
+            temp_tool = Tool(tmp_pos[0], tmp_pos[1], symbol, self.names[idx])  #, self.images[val])
             self.tools.append(temp_tool)
             empty_spaces.remove(tmp_pos)
 
         for tool in self.tools:
             self.labyrinth.write_symbol((tool.x, tool.y), tool.symbol)
 
+        """ GUI elements initializing """
         pygame.init()
 
         self.screen = pygame.display.set_mode((800, 600))
@@ -79,12 +83,13 @@ class Gui :
 
         self.macgyver_sprite = CharacterSprite(self.macgyver_image)
         self.guard_sprite = CharacterSprite(self.guard_image)
-        self.tools_list = [ToolSprite(self.ether_image), ToolSprite(self.needle_image), ToolSprite(self.tube_image)]
+        self.tools_list = (ToolSprite(self.ether_image), ToolSprite(self.needle_image), ToolSprite(self.tube_image))
 
         self.character_sprites_list.add([self.macgyver_sprite, self.guard_sprite])
-        self.tools_sprites_list.add(self.tools_list)
+        self.tools_sprites_list.add(self.tools_list) #, self.toolsC_list)
 
-        self.start_tools_y = 200
+        self.start_tools_y = 200  # to be used when printing tools' names in lateral text
+        self.start_icons_y = 200  # to be used when printing tools' icons in lateral text
 
         pygame.display.set_caption("Le labyrinthe de MacGyver")
 
@@ -94,16 +99,21 @@ class Gui :
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()
+                    #sys.exit()
                     return
+
                 elif event.type == pygame.KEYDOWN:
                     self.launch_game()
                     return
 
+    """ first page: instructions """
     def intro_to_game(self):
         self.screen.blit(self.title_image, [230, 50])
         self.intro_text()
         pygame.display.flip()
+        #self.clock.tick(60)
 
+    """ second page: launching game """
     def launch_game(self):
         self.display_images()
         while True:
@@ -115,12 +125,13 @@ class Gui :
                 elif event.type == pygame.KEYDOWN and event.key == K_RIGHT:
                     new_pos = self.MacGyver.moving_right()
                 elif event.type == pygame.KEYDOWN and event.key == K_LEFT:
-                    new_pops = self.MacGyver.moving_left()
-                elif event.type == pygame.KEYDOWN and event.key == k_DOWN:
+                    new_pos = self.MacGyver.moving_left()
+                elif event.type == pygame.KEYDOWN and event.key == K_DOWN:
                     new_pos = self.MacGyver.moving_down()
                 elif event.type == pygame.KEYDOWN and event.key == K_UP:
                     new_pos = self.MacGyver.moving_up()
 
+            """ player's moves testing """
             if new_pos is not None:
                 prev_pos = self.labyrinth.get_player_position()
                 val_new_pos = self.labyrinth.get_symbol(new_pos)
@@ -134,12 +145,16 @@ class Gui :
                     self.macgyver_sprite.move(prev_pos[0], prev_pos[1])
 
                 elif val_new_pos == 'E' or val_new_pos == 'N' or val_new_pos == 'T':
-                    self.MacGyver.add_tool(val_new_pos)
                     self.macgyver_sprite.move(new_pos[0], new_pos[1])
+                    self.MacGyver.add_tool(val_new_pos)
+                    #self.labyrinth.move_tool_icon()
                     self.labyrinth.write_symbol(new_pos, "P")
-                    self.labyriht.write_symbol(prev_pos, " ")
-                    for idx, symbol in enumerate(sefl.symbols):
+                    self.labyrinth.write_symbol(prev_pos, " ")
+
+                    """ loop to remove the tool from tools' list when picked up """
+                    for idx, symbol in enumerate(self.symbols):
                         if val_new_pos == symbol:
+                            #self.tools.pop(idx)
                             self.tools_list[idx].kill()
                             break
 
@@ -160,9 +175,13 @@ class Gui :
                         pygame.time.wait(5000)
                     break
 
+            #self.character_sprites_list.update()
+            #self.tools_sprites_list.update()
+            #pygame.display.flip()
             self.display_images()
             self.clock.tick(60)
 
+    """ images to be called when game loop iteration """
     def display_images(self):
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.background_image, [0, 0])
@@ -170,8 +189,9 @@ class Gui :
         self.draw_character()
         self.draw_tools()
         self.lateral_text()
-        pygame.display.flip
+        pygame.display.flip()
 
+    """ first page text """
     def intro_text(self):
         basicfont = pygame.font.SysFont(None, 30)
         text1 = basicfont.render("Pour sortir du labyrinthe, présentez-vous devant le gardien", True, (255, 255, 255))
@@ -181,7 +201,7 @@ class Gui :
         text5 = basicfont.render("L'aiguille :", True, (255, 255, 255))
         text6 = basicfont.render("Le tube :", True, (255, 255, 255))
         text7 = basicfont.render("Utilisez les flèches pour vous déplacer dans le labyrinthe.", True, (255, 255, 255))
-        text8 = basicfont, render('Tapez "Echap" pour quitter, n\'importe quelle autre touche pour jouer', True, (255, 0, 0))
+        text8 = basicfont.render('Tapez "Echap" pour quitter, n\'importe quelle autre touche pour jouer', True, (255, 0, 0))
 
         text1_rect = text1.get_rect()
         text1_rect.x = 50
@@ -201,7 +221,7 @@ class Gui :
 
         text5_rect = text5.get_rect()
         text5_rect.x = 250
-        text5_rect.x = 300
+        text5_rect.y = 300
 
         text6_rect = text6.get_rect()
         text6_rect.x = 480
@@ -228,10 +248,11 @@ class Gui :
         self.screen.blit(self.needleC_image, [370, 290])
         self.screen.blit(self.tubeC_image, [590, 290])
 
+    """ second page text """
     def lateral_text(self):
         basicfont = pygame.font.SysFont(None, 25)
         text1 = basicfont.render("Utilisez les flèches ", True, (255, 255, 255))
-        text2 = basicfont.render("pour vous déplacer", True (255, 255, 255))
+        text2 = basicfont.render("pour vous déplacer", True, (255, 255, 255))
         text3 = basicfont.render("Vos objets ramassés :", True, (255, 255, 255))
         text4 = basicfont.render("1.", True, (255, 255, 255))
         text5 = basicfont.render("2.", True, (255, 255, 255))
@@ -268,12 +289,19 @@ class Gui :
         self.screen.blit(text5, text5_rect)
         self.screen.blit(text6, text6_rect)
 
+        """ loop to print the right tool's name in the lateral text when picked up """
         self.start_tools_y = 200
+        #self.start_icons_y = 200
         for tool in self.MacGyver.PickedUpTools:
             for idx, symbol in enumerate(self.symbols):
+            # for idx, val, symbol in enumerate(self.symbols):
                 if tool == symbol:
                     self.add_tool_text(self.names[idx])
+                    #self.add_tool_icon(self.images[val])
 
+        #pygame.display.flip()
+
+    """ building maze: walls """
     def draw_walls(self):
         for x, line in enumerate(self.labyrinth.structure):
             for y, char in enumerate(line):
@@ -284,6 +312,7 @@ class Gui :
                     self.wall_sprites_list.add(wall)
         self.wall_sprites_list.draw(self.screen)
 
+    """ building maze: characters """
     def draw_character(self):
         pos_player = self.labyrinth.get_player_position()
         pos_guard = self.labyrinth.get_guard_position()
@@ -292,13 +321,16 @@ class Gui :
         self.character_sprites_list.update()
         self.character_sprites_list.draw(self.screen)
 
+    """ building maze: tools """
     def draw_tools(self):
         for idx, temp_tool in enumerate(self.tools):
             self.tools_list[idx].rect.x = temp_tool.y * 40
             self.tools_list[idx].rect.y = temp_tool.x * 40
+        #self.tools_sprites_list.remove(self.toolsC_list)
         self.tools_sprites_list.update()
         self.tools_sprites_list.draw(self.screen)
 
+    """ text to be printed in lateral if lost game """
     def lost_text(self):
         basicfont = pygame.font.SysFont(None, 20)
         text = basicfont.render("Perdu, il manque {} objet(s) !!!".format(3 - len(self.MacGyver.PickedUpTools)), True, (255, 255, 255))
@@ -307,6 +339,7 @@ class Gui :
         text_rect.y = 350
         self.screen.blit(text, text_rect)
 
+    """ text to be printed in lateral if won game """
     def win_text(self):
         basicfont = pygame.font.SysFont(None, 30)
         text = basicfont.render("Gagné !", True, (255, 255, 255))
@@ -315,6 +348,7 @@ class Gui :
         text_rect.y = 350
         self.screen.blit(text, text_rect)
 
+    """ tool's name to be printed in lateral when picked up """
     def add_tool_text(self, name):
         basicfont = pygame.font.SysFont(None, 25)
         text = basicfont.render(name, True, (255, 255, 255))
@@ -323,3 +357,25 @@ class Gui :
         text_rect.y = self.start_tools_y
         self.screen.blit(text, text_rect)
         self.start_tools_y += 50
+
+    """ tool's icon to be printed in lateral when picked up """
+    def add_tool_icon(self, image):
+        self.image_rect = image.get_rect()
+        self.image_rect.x = 700
+        self.image_rect.y = self.start_icons_y
+        self.screen.blit(self.image, self.image_rect)
+        self.start_icons_y += 50
+
+    def move_tool_icon(self, image):
+        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.background_image, [0, 0])
+        self.image = image
+        pos_image = image.get_rect()
+        self.screen.blit(self.image, pos_image)
+        pygame.display.update()
+        for x in range(100):
+            self.screen.blit(self.background_image, pos_image)
+            pos_image = pos_image.move(2, 0)
+            self.screen.blit(self.image, pos_image)
+            pygame.display.update()
+            pygame.time.delay(100)

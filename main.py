@@ -3,10 +3,10 @@
 import argparse
 
 
-from maze import*
-from game_manager import GameManager
-from constants import*
-from gui import Gui
+from Maze import *
+from Game_Manager import GameManager
+from Constants import*
+from Gui import Gui
 
 
 def parse_arguments():
@@ -32,3 +32,5 @@ def main():
 
 if __name__== "__main__":
     main()
+
+

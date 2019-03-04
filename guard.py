@@ -1,11 +1,11 @@
 class Guard:
 
+    # init guard's position
     def __init__(self, x, y):
-        """ init guard's position """
         self.x = x
         self.y = y
 
+    # checking if the positioning works fine
     def __str__(self):
-        """ checking if the positioning works fine """
         return str(self.x) + " " + str(self.y)
 
