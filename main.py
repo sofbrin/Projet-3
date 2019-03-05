@@ -11,17 +11,18 @@ from Gui import Gui
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-g", "--gui", action='store_true', help="""ouverture en mode graphique""")
+    parser.add_argument("-g", "--gui", action='store_true',
+                        help="""ouverture en mode graphique""")
     return parser.parse_args()
 
 
 def main():
+    """ opening through GUI or Terminal"""
     args = parse_arguments()
     labyrinth = Maze("grid.txt")
     if args.gui == True:
         gui = Gui(labyrinth)
         gui.start()
-        gui.launch_game()
 
     else:
         print(maze_title)
@@ -30,7 +31,5 @@ def main():
         game_manager.play_or_quit()
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
     main()
-
-

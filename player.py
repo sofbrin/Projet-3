@@ -1,15 +1,19 @@
+#! /usr/bin/env python3
+# coding: utf8
+
+
 class Player:
 
-    """ init player's position """
     def __init__(self, x, y):
+        """ initializing player's position """
         self.x = x
         self.y = y
 
-        """ init picked up tools list """
+        # init picked up tools list
         self.PickedUpTools = []
 
-    """ adding picked up tools to list """
     def add_tool(self, symbol):
+        """ adding picked up tools to list """
         self.PickedUpTools.append(symbol)
 
     def moving_up(self):
@@ -28,11 +32,12 @@ class Player:
         self.y -= 1
         return self.x, self.y
 
-    """ moving the player """
     def moving_to(self):
+        """ player's move """
         while True:
             choice2 = input('Choisissez un chiffre pour vous déplacer : ')
-            if choice2 == "Q" or choice2 == "6" or choice2 == "4" or choice2 == "8" or choice2 == "2":
+            if choice2 == "Q" or choice2 == "6" or choice2 == "4" \
+                    or choice2 == "8" or choice2 == "2":
                 break
 
         if choice2 == "Q":
@@ -52,11 +57,13 @@ class Player:
 
         return self.x, self.y
 
-    """ checking if the player's positioning works fine """
     def __str__(self):
+        """ checking if the player's positioning works fine """
         return str(self.x) + " " + str(self.y)
 
-    """ sending back to the previous position if the new one doesnt allow the move """
     def set_position(self, position):
+        """ sending back to the previous position
+            if the new one doesnt allow the move
+        """
         self.x = position[0]
         self.y = position[1]

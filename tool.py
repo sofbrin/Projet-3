@@ -1,12 +1,13 @@
+#! /usr/bin/env python3
+# coding: utf8
+
+
 class Tool:
 
-    """ init tools """
-    def __init__(self, x, y, symbol, name): #, image):
+    def __init__(self, x, y, symbol, name, image=None):
+        """ initializing tools """
         self.x = x
         self.y = y
         self.symbol = symbol
         self.name = name
-        #self.image = image
-
-    def __str__(self):
-        return self.name
+        self.image = image

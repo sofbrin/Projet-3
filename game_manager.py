@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+# coding: utf8
 import random
 import sys
 
@@ -10,15 +12,15 @@ from Tool import Tool
 
 class GameManager:
 
-    """ init Game Manager """
     def __init__(self, labyrinth):
+        """ initializing Game Manager """
         self.labyrinth = labyrinth
 
         # player & guard positioning
-        positionP = self.labyrinth.get_player_position()
-        positionG = self.labyrinth.get_guard_position()
-        self.MacGyver = Player(positionP[0], positionP[1])
-        self.guard = Guard(positionG[0], positionG[1])
+        position_p = self.labyrinth.get_player_position()
+        position_g = self.labyrinth.get_guard_position()
+        self.MacGyver = Player(position_p[0], position_p[1])
+        self.guard = Guard(position_g[0], position_g[1])
 
         # tools random positioning from an empty spaces list
         empty_spaces = self.labyrinth.get_empty_spaces()
@@ -35,8 +37,8 @@ class GameManager:
         for tool in self.tools:
             self.labyrinth.write_symbol((tool.x, tool.y), tool.symbol)
 
-    """ Game loop """
     def play_or_quit(self):
+        """ Game loop """
 
         choice1 = input('Tapez 1 pour jouer, Q pour quitter : ')
 
@@ -62,14 +64,16 @@ class GameManager:
                 self.MacGyver.set_position(prev_pos)
                 print("Déplacement impossible")
 
-            elif val_new_pos == 'E' or val_new_pos == 'N' or val_new_pos == 'T':
+            elif val_new_pos == 'E' or val_new_pos == 'N' \
+                    or val_new_pos == 'T':
                 self.MacGyver.add_tool(val_new_pos)
                 self.labyrinth.write_symbol(new_pos, "P")
                 self.labyrinth.write_symbol(prev_pos, " ")
 
             elif val_new_pos == 'G':
                 if len(self.MacGyver.PickedUpTools) < 3:
-                    print('Arghhhhhh, perdu, il manque {} objets!!!'.format(3 - len(self.MacGyver.PickedUpTools)))
+                    print('Arghhhhhh, perdu, il manque {} objet(s)!!!'.
+                          format(3 - len(self.MacGyver.PickedUpTools)))
                 else:
                     self.labyrinth.write_symbol(new_pos, "P")
                     self.labyrinth.write_symbol(prev_pos, " ")
