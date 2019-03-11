@@ -10,17 +10,18 @@ class Maze:
             structure_maze = []
             for line in file:
                 lines = []
-                for sprite in line:
-                    if sprite != '\n':
-                        lines.append(sprite)
+                for column in line:
+                    if column != '\n':
+                        lines.append(column)
                 structure_maze.append(lines)
             self.structure = structure_maze
 
     def display(self):
         """ maze display """
         for line in self.structure:
-            toto = "".join(line)
-            print(toto)
+            maze = "".join(line)
+            print(maze)
+            #print("Objets ramassés : ")
 
     def get_player_position(self):
         """ getting player's position """

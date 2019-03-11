@@ -3,9 +3,9 @@
 import argparse
 
 
-from Maze import *
+from Maze import Maze
 from Game_Manager import GameManager
-from Constants import*
+from Constants import maze_title, game_intro
 from Gui import Gui
 
 
@@ -17,10 +17,10 @@ def parse_arguments():
 
 
 def main():
-    """ opening through GUI or Terminal"""
+    """ opening through GUI or Terminal """
     args = parse_arguments()
     labyrinth = Maze("grid.txt")
-    if args.gui == True:
+    if args.gui is True:
         gui = Gui(labyrinth)
         gui.start()
 

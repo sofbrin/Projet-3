@@ -16,6 +16,15 @@ class Player:
         """ adding picked up tools to list """
         self.PickedUpTools.append(symbol)
 
+        """for tool in self.PickedUpTools:
+            for idx, symbol in enumerate(self.symbols):
+                if tool == symbol:
+                    self.add_tool_text(self.names[idx])"""
+
+    def write_pickedup_tool_name(self):
+        """ writing tools' names when picked up """
+        print("Objets ramassés : ", ' - '.join([tool for tool in self.PickedUpTools]))
+
     def moving_up(self):
         self.x -= 1
         return self.x, self.y
@@ -31,6 +40,27 @@ class Player:
     def moving_left(self):
         self.y -= 1
         return self.x, self.y
+
+    """def input_choice2(self):
+        c = readkey()
+        return c
+
+    def moving_to(self):
+        player's move
+
+        choice2 = self.input_choice2()
+
+        if choice2 == key.RIGHT:
+            self.moving_right()
+
+        elif choice2 == key.LEFT:
+            self.moving_left()
+
+        elif choice2 == key.DOWN:
+            self.moving_down()
+
+        elif choice2 == key.UP:
+            self.moving_up()"""
 
     def moving_to(self):
         """ player's move """

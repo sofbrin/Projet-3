@@ -6,7 +6,7 @@ import sys
 
 from Player import Player
 from Guard import Guard
-from Constants import*
+from Constants import game_instructions, end_of_game
 from Tool import Tool
 
 
@@ -26,7 +26,7 @@ class GameManager:
         empty_spaces = self.labyrinth.get_empty_spaces()
         self.tools = []
         self.symbols = ['E', 'N', 'T']
-        self.names = ['Ether', 'Needle', 'Tube']
+        self.names = ['éther', 'aiguille', 'tube']
 
         for idx, symbol in enumerate(self.symbols):
             tmp_pos = random.choice(empty_spaces)
@@ -39,11 +39,11 @@ class GameManager:
 
     def play_or_quit(self):
         """ Game loop """
-
         choice1 = input('Tapez 1 pour jouer, Q pour quitter : ')
 
         while choice1 == "1":
             self.labyrinth.display()
+            self.MacGyver.write_pickedup_tool_name()
             print(game_instructions)
 
             # moving vars definition
@@ -72,7 +72,7 @@ class GameManager:
 
             elif val_new_pos == 'G':
                 if len(self.MacGyver.PickedUpTools) < 3:
-                    print('Arghhhhhh, perdu, il manque {} objet(s)!!!'.
+                    print('Perdu, il manque {} objet(s)!!!'.
                           format(3 - len(self.MacGyver.PickedUpTools)))
                 else:
                     self.labyrinth.write_symbol(new_pos, "P")
@@ -81,3 +81,10 @@ class GameManager:
                 break
 
         print(end_of_game)
+
+    """def print_tool_name(self):
+        #for tool in self.MacGyver.PickedUpTools:
+        for idx, symbol in enumerate(self.symbols):
+                #if tool == symbol:
+            print('Objet(s) ramassé(s) : ', ', '.join(self.names[idx] for tool in self.MacGyver.PickedUpTools))
+            #{}'.format(self.names[idx]))"""

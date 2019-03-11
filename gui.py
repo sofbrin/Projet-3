@@ -4,7 +4,7 @@ import pygame
 import random
 import sys
 
-from pygame.locals import *
+from pygame.locals import K_RIGHT, K_LEFT, K_DOWN, K_UP
 from Player import Player
 from Tool import Tool
 
@@ -112,6 +112,7 @@ class Gui:
         self.display_images()
 
         # Main loop
+        pygame.key.set_repeat()
         while True:
             new_pos = None
             for event in pygame.event.get():
@@ -140,7 +141,7 @@ class Gui:
                     self.labyrinth.write_symbol(prev_pos, " ")
 
                 elif val_new_pos == 'x':
-                    self.macgyver_sprite.move(prev_pos[0], prev_pos[1])
+                    self.MacGyver.set_position(prev_pos)
 
                 elif val_new_pos == 'E' or val_new_pos == 'N' \
                         or val_new_pos == 'T':
@@ -201,7 +202,7 @@ class Gui:
                                  "dans le labyrinthe.", True, (255, 255, 255))
         text8 = basicfont.render('Tapez "Echap" pour quitter, n\'importe '
                                  'quelle autre touche pour jouer',
-                                 True, (255, 0, 0))
+                                 True, (60, 117, 128))
 
         text1_rect = text1.get_rect()
         text1_rect.x = 50
@@ -336,7 +337,7 @@ class Gui:
         basicfont = pygame.font.SysFont(None, 20)
         text = basicfont.render("Perdu, il manque {} objet(s) !!!"
                                 .format(3 - len(self.MacGyver.PickedUpTools)),
-                                True, (255, 255, 255))
+                                True, (255, 0, 0))
         text_rect = text.get_rect()
         text_rect.x = 610
         text_rect.y = 350
@@ -345,10 +346,10 @@ class Gui:
     def win_text(self):
         """ Text to be printed in lateral if won game """
         basicfont = pygame.font.SysFont(None, 30)
-        text = basicfont.render("Gagné !", True, (255, 255, 255))
+        text = basicfont.render("Gagné !", True, (255, 215, 0))
         text_rect = text.get_rect()
         text_rect.x = 610
-        text_rect.y = 350
+        text_rect.y = 370
         self.screen.blit(text, text_rect)
 
     def add_tool_text(self, name):
