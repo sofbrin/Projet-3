@@ -81,10 +81,3 @@ class GameManager:
                 break
 
         print(end_of_game)
-
-    """def print_tool_name(self):
-        #for tool in self.MacGyver.PickedUpTools:
-        for idx, symbol in enumerate(self.symbols):
-                #if tool == symbol:
-            print('Objet(s) ramassé(s) : ', ', '.join(self.names[idx] for tool in self.MacGyver.PickedUpTools))
-            #{}'.format(self.names[idx]))"""

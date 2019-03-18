@@ -123,12 +123,16 @@ class Gui:
                     return
                 elif event.type == pygame.KEYDOWN and event.key == K_RIGHT:
                     new_pos = self.MacGyver.moving_right()
+                    break
                 elif event.type == pygame.KEYDOWN and event.key == K_LEFT:
                     new_pos = self.MacGyver.moving_left()
+                    break
                 elif event.type == pygame.KEYDOWN and event.key == K_DOWN:
                     new_pos = self.MacGyver.moving_down()
+                    break
                 elif event.type == pygame.KEYDOWN and event.key == K_UP:
                     new_pos = self.MacGyver.moving_up()
+                    break
 
             # Player's moves testing
             if new_pos is not None:
@@ -256,11 +260,13 @@ class Gui:
                                  True, (255, 255, 255))
         text2 = basicfont.render("pour vous déplacer",
                                  True, (255, 255, 255))
-        text3 = basicfont.render("Vos objets ramassés :",
+        text3 = basicfont.render('"Echap" pour quitter',
                                  True, (255, 255, 255))
-        text4 = basicfont.render("1.", True, (255, 255, 255))
-        text5 = basicfont.render("2.", True, (255, 255, 255))
-        text6 = basicfont.render("3.", True, (255, 255, 255))
+        text4 = basicfont.render("Vos objets ramassés :",
+                                 True, (255, 255, 255))
+        text5 = basicfont.render("1.", True, (255, 255, 255))
+        text6 = basicfont.render("2.", True, (255, 255, 255))
+        text7 = basicfont.render("3.", True, (255, 255, 255))
 
         text1_rect = text1.get_rect()
         text1_rect.x = 610
@@ -272,19 +278,23 @@ class Gui:
 
         text3_rect = text3.get_rect()
         text3_rect.x = 610
-        text3_rect.y = 150
+        text3_rect.y = 95
 
         text4_rect = text4.get_rect()
         text4_rect.x = 610
-        text4_rect.y = 200
+        text4_rect.y = 150
 
         text5_rect = text5.get_rect()
         text5_rect.x = 610
-        text5_rect.y = 250
+        text5_rect.y = 200
 
         text6_rect = text6.get_rect()
         text6_rect.x = 610
-        text6_rect.y = 300
+        text6_rect.y = 250
+
+        text7_rect = text7.get_rect()
+        text7_rect.x = 610
+        text7_rect.y = 300
 
         self.screen.blit(text1, text1_rect)
         self.screen.blit(text2, text2_rect)
@@ -292,6 +302,7 @@ class Gui:
         self.screen.blit(text4, text4_rect)
         self.screen.blit(text5, text5_rect)
         self.screen.blit(text6, text6_rect)
+        self.screen.blit(text7, text7_rect)
 
         # Printing tool's name and image in lateral when picked up
         self.start_tools_y = 200
