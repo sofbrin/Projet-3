@@ -13,8 +13,8 @@
 	
 **3. Lancement du jeu :**
 
-	- en mode terminal : **main.py**
-	- en mode graphique : **main.py -g**
+	- en mode terminal : main.py
+	- en mode graphique : main.py -g
 	
 **4. Screenshot => ce que l'on voit :**
 
