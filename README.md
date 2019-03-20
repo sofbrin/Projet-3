@@ -12,7 +12,7 @@
 	pip install -r requirements.txt
 	
 	Nota : possibilité de changer la grille du labyrinthe
-	grâce au fichier texte.
+	grâce au fichier grid.txt.
 	
 **3. Lancement du jeu :**
 
