@@ -11,6 +11,9 @@
 
 	pip install -r requirements.txt
 	
+	Nota : possibilité de changer la grille du labyrinthe
+	grâce au fichier texte.
+	
 **3. Lancement du jeu :**
 
 	- en mode terminal : main.py
@@ -19,8 +22,8 @@
 **4. Screenshot => ce que l'on voit :**
 
 	- en mode terminal : 
-![modeTerminal](img/modeTerminal.png)
+![labyrinthe en mode terminal](img/modeTerminal.png)
 
 	- en mode graphique : 
-![modeGraphique](img/modeGraphique.png)
+![labyrinthe en mode graphique](img/modeGraphique.png)
 	
