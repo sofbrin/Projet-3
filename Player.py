@@ -68,10 +68,6 @@ class Player:
 
         return self.x, self.y
 
-    def __str__(self):
-        """ checking if the player's positioning works fine """
-        return str(self.x) + " " + str(self.y)
-
     def set_position(self, position):
         """ sending back to the previous position
             if the new one doesnt allow the move

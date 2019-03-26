@@ -8,7 +8,3 @@ class Guard:
         """ initializing guard's position """
         self.x = x
         self.y = y
-
-    def __str__(self):
-        """ checking if the positioning works fine """
-        return str(self.x) + " " + str(self.y)
